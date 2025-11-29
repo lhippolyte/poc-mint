@@ -28,23 +28,20 @@ function validateHMAC(query) {
   const params = { ...query };
   delete params.signature;
 
-  // Construction de la string signée (tri des clés + concat)
   const message = Object.keys(params)
     .sort()
     .map((key) => `${key}=${params[key]}`)
     .join("");
 
   const generated = crypto
-    .createHmac("sha256", APP_PROXY_SECRET) // TON shared secret App Proxy
+    .createHmac("sha256", APP_PROXY_SECRET)
     .update(message)
     .digest("hex");
 
-  console.log("Signature reçue :", signature);
-  console.log("Signature recalculée :", generated);
-
-  return generated === signature;
+    console.log('validateHMAC generated',generated);
+    console.log('validateHMACy hmac',hmac);
+  return generated === hmac;
 }
-
 
 // Route App Proxy : /apps/verify
 app.get("/verify", async (req, res) => {
