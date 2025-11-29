@@ -14,28 +14,37 @@ const authorizedEmails = [
 ];
 
 // Shared secret de l’app proxy Shopify (à récupérer dans ton admin)
-const APP_PROXY_SECRET = process.env.SHOPIFY_APP_PROXY_SECRET;
+const APP_PROXY_SECRET = process.env.SHOPIFY_API_SECRET;
 
 // Verification HMAC — sécurité App Proxy
 function validateHMAC(query) {
-  const hmac = query.hmac || query.signature;
-    const params = { ...query };
-    delete params.hmac;
-    delete params.signature;
+  const signature = query.signature;
+  if (!signature) {
+    console.log("No signature found");
+    return false;
+  }
+
+  // Copie des paramètres et suppression de la signature
+  const params = { ...query };
+  delete params.signature;
+
+  // Construction de la string signée (tri des clés + concat)
   const message = Object.keys(params)
     .sort()
     .map((key) => `${key}=${params[key]}`)
     .join("");
 
   const generated = crypto
-    .createHmac("sha256", APP_PROXY_SECRET)
+    .createHmac("sha256", APP_PROXY_SECRET) // TON shared secret App Proxy
     .update(message)
     .digest("hex");
 
-    console.log('validateHMAC generated',generated);
-    console.log('validateHMACy hmac',hmac);
-  return generated === hmac;
+  console.log("Signature reçue :", signature);
+  console.log("Signature recalculée :", generated);
+
+  return generated === signature;
 }
+
 
 // Route App Proxy : /apps/verify
 app.get("/verify", async (req, res) => {
