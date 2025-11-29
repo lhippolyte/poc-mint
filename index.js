@@ -39,7 +39,7 @@ function validateHMAC(query) {
     .digest("hex");
 
     console.log('validateHMAC generated',generated);
-    console.log('validateHMACy hmac',hmac);
+    console.log('validateHMACy signature',signature);
   return generated === hmac;
 }
 
