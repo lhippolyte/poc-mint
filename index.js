@@ -18,7 +18,10 @@ const APP_PROXY_SECRET = process.env.SHOPIFY_APP_PROXY_SECRET;
 
 // Verification HMAC — sécurité App Proxy
 function validateHMAC(query) {
-  const { hmac, ...params } = query;
+  const hmac = query.hmac || query.signature;
+    const params = { ...query };
+    delete params.hmac;
+    delete params.signature;
   const message = Object.keys(params)
     .sort()
     .map((key) => `${key}=${params[key]}`)
