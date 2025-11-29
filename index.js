@@ -34,6 +34,8 @@ function validateHMAC(query) {
 
 // Route App Proxy : /apps/verify
 app.get("/verify", async (req, res) => {
+    console.log('inside app get verify');
+    
   const { email, company } = req.query;
 
   if (!validateHMAC(req.query)) {
