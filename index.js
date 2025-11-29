@@ -36,9 +36,10 @@ function validateHMAC(query) {
 
 // Route App Proxy : /apps/verify
 app.get("/verify", async (req, res) => {
-    console.log('inside app get verify req',req);
+    console.log('inside app get verify req.query',req.query);
     
   const { email, company } = req.query;
+  console.log('inside app get verify email',email);
 
   if (!validateHMAC(req.query)) {
     return res.status(403).send("Invalid signature");
