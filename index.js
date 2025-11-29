@@ -29,12 +29,14 @@ function validateHMAC(query) {
     .update(message)
     .digest("hex");
 
+    console.log('validateHMAC generated',generated);
+    console.log('validateHMACy hmac',hmac);
   return generated === hmac;
 }
 
 // Route App Proxy : /apps/verify
 app.get("/verify", async (req, res) => {
-    console.log('inside app get verify');
+    console.log('inside app get verify req',req);
     
   const { email, company } = req.query;
 
