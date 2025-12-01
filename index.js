@@ -40,7 +40,7 @@ function validateHMAC(query) {
 
     console.log('validateHMAC generated',generated);
     console.log('validateHMACy signature',signature);
-  return generated === hmac;
+  return generated === signature;
 }
 
 // Route App Proxy : /apps/verify
